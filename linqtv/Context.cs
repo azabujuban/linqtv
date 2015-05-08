@@ -3,7 +3,7 @@ using linqtv;
 using linqtv.Model;
 using linqtv.Linq;
 
-namespace LinqTVDB
+namespace linqtv
 {
     public class Context : IContext
     {

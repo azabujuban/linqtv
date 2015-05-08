@@ -135,7 +135,6 @@
     <Compile Include="Linq\TvdbQueryable.cs" />
     <Compile Include="Linq\TvdbQueryExecutor.cs" />
     <Compile Include="Linq\TvdbQueryExpressionVisitor.cs" />
-    <Compile Include="Linq\TvdbQueryGenerator.cs" />
     <Compile Include="Linq\TvdbQueryGeneratorQueryModelVisitor.cs" />
     <Compile Include="Model\language.cs" />
     <Compile Include="Model\episode.cs" />
