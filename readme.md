@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/azabujuban/linqtv.svg?branch=master)](https://travis-ci.org/azabujuban/linqtv)
+
 #LINQ provider for accessing TheTVDB.com
 [TheTVDB.com](TheTVDB.com) is a great source for information about TV shows. They also provide an API to access it. Unfortunately, while simple it's not convenient which together with my desire to try build a LINQ provider seemed like a perfect candidate.
 
