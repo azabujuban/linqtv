@@ -139,6 +139,7 @@
     <Compile Include="Model\language.cs" />
     <Compile Include="Model\episode.cs" />
     <Compile Include="Model\show.cs" />
+    <Compile Include="Network\Thetvdb\Api.cs" />
     <Compile Include="Network\Request.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
