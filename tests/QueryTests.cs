@@ -19,13 +19,13 @@ namespace tests
         public void QueryTest1()
         {
             var query = Base
-                        .Where(s => s.Name == ("somestring"));
+                        .Where(s => s.SeriesName == ("somestring"));
 
             var url_params = TvdbQueryGeneratorQueryModelVisitor.GenerateUrlParams(Parser.GetParsedQuery(query.Expression));
 
             
 
-            CollectionAssert.AreEquivalent(url_params.ToList(), new Dictionary<string, string> {["Name"] = "somestring" }.ToList());
+            CollectionAssert.AreEquivalent(url_params.ToList(), new Dictionary<string, string> {["SeriesName"] = "somestring" }.ToList());
 
 
         }

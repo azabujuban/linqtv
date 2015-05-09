@@ -24,7 +24,7 @@ namespace linqtv.Linq
 
         protected override Expression VisitMemberExpression(MemberExpression expression)
         {
-            if ((expression.Member.Name != "Name") || (expression.Member.DeclaringType != typeof(Model.Show)))
+            if ((expression.Member.Name != "SeriesName") || (expression.Member.DeclaringType != typeof(Model.Show)))
                 throw new NotImplementedException("Only .Name property of Show is supported");
 
             return expression;
