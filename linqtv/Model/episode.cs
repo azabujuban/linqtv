@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Xml.Linq;
 
 namespace linqtv.Model
 {
@@ -16,6 +17,11 @@ namespace linqtv.Model
 
     public class Episode
     {
+        public static Episode FromXElement(XElement e)
+        {
+            return new Episode();
+        }
+
         public Show Show { get; private set; }
         public uint Id { get; private set; }
         public float Combined_episodenumber { get; private set; }

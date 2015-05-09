@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Xml.Linq;
 
 namespace linqtv.Model
 {
@@ -12,6 +13,35 @@ namespace linqtv.Model
 
     public class Show
     {
+
+        public static Show FromXElement(XElement e) => new Show()
+        {
+            id = (uint)e.Element(nameof(id)),
+            Actors = ((string)e.Element(nameof(Actors))).SplitByPipe(),
+            Airs_DayOfWeek = ((string)e.Element(nameof(Airs_DayOfWeek))),
+            Airs_Time = (DateTime)e.Element(nameof(Airs_Time)),
+            ContentRating = ((string)e.Element(nameof(ContentRating))),
+            FirstAired = (DateTime)e.Element(nameof(FirstAired)),
+            Genre = ((string)e.Element(nameof(Genre))).SplitByPipe(),
+            IMDB_ID = ((string)e.Element(nameof(IMDB_ID))),
+            Language = ((string)e.Element(nameof(Language))),
+            Network = ((string)e.Element(nameof(Network))),
+            NetworkID = ((uint?)e.Element(nameof(NetworkID))),
+            Overview = ((string)e.Element(nameof(Overview))),
+            Rating = ((float?)e.Element(nameof(Rating))),
+            RatingCount = ((uint?)e.Element(nameof(RatingCount))),
+            Runtime = ((uint?)e.Element(nameof(Runtime))),
+            SeriesName = ((string)e.Element(nameof(SeriesName))),
+            Status = ParserUtils.ParseStatusEnum(((string)e.Element(nameof(Status)))),
+            added = (DateTime)e.Element(nameof(added)),
+            addedBy = (uint?)e.Element(nameof(addedBy)),
+            banner = (string)e.Element(nameof(banner)),
+            fanart = (string)e.Element(nameof(fanart)),
+            lastupdated = (DateTime)e.Element(nameof(lastupdated)),
+            posters = ((string)e.Element(nameof(posters))).SplitByPipe(),
+            zap2it_id = (string)e.Element(nameof(zap2it_id)),
+        };
+
         public uint id { get; private set; }
         public IImmutableList<string> Actors { get; private set; }
         public string Airs_DayOfWeek { get; private set; }
