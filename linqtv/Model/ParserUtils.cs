@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
+using System.Xml.Linq;
 
 namespace linqtv.Model
 {
     public static class ParserUtils
     {
-        public static IImmutableList<string> SplitByPipe(this string str) => str.Split('|').Select(s => s.Trim()).ToImmutableList();
+        public static IImmutableList<string> SplitByPipe(this string str) =>
+            str?.Split('|')
+            .Where(s => !(string.IsNullOrWhiteSpace(s) || string.IsNullOrEmpty(s)))
+            .Select(s => s.Trim()).ToImmutableList();
 
         public static TEnum? ParseEnum<TEnum>(string enumString) where TEnum: struct
         {
@@ -21,8 +25,40 @@ namespace linqtv.Model
                 throw new ArgumentException($"{enumString} doesn't look like a {typeof(TEnum)}");
 
             return new TEnum?(outEnum);
+        }
 
+        public static XElement ElementOrNull(this XElement element, XName name)
+        {
+            var retElement = element.Element(name);
 
+            if (string.IsNullOrEmpty(retElement?.Value) || string.IsNullOrWhiteSpace(retElement?.Value))
+                return null;
+
+            return retElement;
+        }
+
+        public static DateTimeOffset? ElementAsDateTimeOffset(this XElement element, XName name, string dateTimeFormat)
+        {
+            try
+            {
+                return DateTimeOffset.ParseExact((string)element.Element(name), dateTimeFormat, null);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static DateTimeOffset? ElementAsDateTimeOffset(this XElement element, XName name)
+        {
+            try
+            {
+                return DateTimeOffset.FromUnixTimeSeconds((long)element.Element(name));
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
