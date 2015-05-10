@@ -17,12 +17,42 @@ namespace linqtv.Model
 
     public class Episode
     {
-        public static Episode FromXElement(XElement e)
-        {
-            return new Episode();
-        }
-
         public Show Show { get; private set; }
+
+        public static Episode FromXElement(XElement e) => new Episode()
+        {
+            Id = (uint)e.Element(nameof(Id)),
+            Combined_episodenumber = (float)e.Element(nameof(Combined_episodenumber)),
+            Combined_season = (float)e.Element(nameof(Combined_season)),
+            DVD_episodenumber = (float?)e.Element(nameof(DVD_episodenumber)),
+            DVD_season = (uint?)e.Element(nameof(DVD_season)),
+            Director = ((string)e.Element(nameof(Director))).SplitByPipe(),
+            EpImgFlag = ParserUtils.ParseEnum<EpImgFlagEnum>(((string)e.Element(nameof(EpImgFlag)))),
+            EpisodeName = (string)e.Element(nameof(EpisodeName)),
+            EpisodeNumber = (uint)e.Element(nameof(EpisodeNumber)),
+            FirstAired = (DateTime)e.Element(nameof(FirstAired)),
+            GuestStars = ((string)e.Element(nameof(GuestStars))).SplitByPipe(),
+            IMDB_ID = (string)e.Element(nameof(IMDB_ID)),
+            Language = (string)e.Element(nameof(Language)),
+            Overview = (string)e.Element(nameof(Overview)),
+            ProductionCode = (string)e.Element(nameof(ProductionCode)),
+            Rating = (float?)e.Element(nameof(Rating)),
+            RatingCount = (uint?)e.Element(nameof(RatingCount)),
+            SeasonNumber = (uint?)e.Element(nameof(SeasonNumber)),
+            Writer = ((string)e.Element(nameof(Writer))).SplitByPipe(),
+            absolute_number = (uint?)e.Element(nameof(absolute_number)),
+            airsafter_season = (uint?)e.Element(nameof(airsafter_season)),
+            airsbefore_episode = (uint?)e.Element(nameof(airsbefore_episode)),
+            airsbefore_season = (uint?)e.Element(nameof(airsbefore_season)),
+            filename = (string)e.Element(nameof(filename)),
+            lastupdated = (DateTime)e.Element(nameof(lastupdated)),
+            seasonid = (uint?)e.Element(nameof(seasonid)),
+            seriesid = (uint)e.Element(nameof(seriesid)),
+            thumb_added = (DateTime)e.Element(nameof(thumb_added)),
+            thumb_height = (uint)e.Element(nameof(thumb_height)),
+            thumb_width = (uint)e.Element(nameof(thumb_width)),
+        };
+
         public uint Id { get; private set; }
         public float Combined_episodenumber { get; private set; }
         public float Combined_season { get; private set; }

@@ -32,7 +32,7 @@ namespace linqtv.Model
             RatingCount = ((uint?)e.Element(nameof(RatingCount))),
             Runtime = ((uint?)e.Element(nameof(Runtime))),
             SeriesName = ((string)e.Element(nameof(SeriesName))),
-            Status = ParserUtils.ParseStatusEnum(((string)e.Element(nameof(Status)))),
+            Status = ParserUtils.ParseEnum<StatusEnum>(((string)e.Element(nameof(Status)))),
             added = (DateTime)e.Element(nameof(added)),
             addedBy = (uint?)e.Element(nameof(addedBy)),
             banner = (string)e.Element(nameof(banner)),
