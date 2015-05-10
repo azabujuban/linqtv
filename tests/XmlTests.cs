@@ -1,9 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Collections.Immutable;
 
@@ -99,5 +95,85 @@ namespace tests
             Assert.IsNull(modelEpisode.thumb_height);
             Assert.IsNull(modelEpisode.thumb_width);
         }
+
+        [TestMethod]
+        public void TestXml2()
+        {
+            var goodSeriesXml = XElement.Parse(@"
+<Series>
+  <id>70336</id>
+  <Actors>|Jay Leno|</Actors>
+  <Airs_DayOfWeek>Daily</Airs_DayOfWeek>
+  <Airs_Time>11:35 PM</Airs_Time>
+  <ContentRating></ContentRating>
+  <FirstAired>1992-05-25</FirstAired>
+  <Genre>|Comedy|Talk Show|</Genre>
+  <IMDB_ID>tt0103569</IMDB_ID>
+  <Language>en</Language>
+  <Network>NBC</Network>
+  <NetworkID></NetworkID>
+  <Overview>The Tonight Show with Jay Leno is an American late-night talk show currently hosted by Jay Leno, on NBC. It made its debut on May 25, 1992, following Johnny Carson's retirement as host of The Tonight Show. The nightly broadcast at 23:35 (Eastern) originates from NBC's studios, in Burbank, California.</Overview>
+  <Rating>7.4</Rating>
+  <RatingCount>13</RatingCount>
+  <Runtime>60</Runtime>
+  <SeriesID>10020</SeriesID>
+  <SeriesName>The Tonight Show with Jay Leno</SeriesName>
+  <Status>Ended</Status>
+  <added></added>
+  <addedBy></addedBy>
+  <banner>graphical/70336-g.jpg</banner>
+  <fanart>fanart/original/70336-1.jpg</fanart>
+  <lastupdated>1422299124</lastupdated>
+  <poster>posters/70336-2.jpg</poster>
+  <tms_wanted_old>1</tms_wanted_old>
+  <zap2it_id>SH00004397</zap2it_id>
+</Series>
+
+            ");
+
+            var modelSeries = linqtv.Model.Show.FromXElement(goodSeriesXml);
+            Assert.AreEqual<uint>(modelSeries.id, 70336);
+
+            Assert.IsNotNull(modelSeries.Actors);
+            Assert.AreEqual(modelSeries.Actors[0], "Jay Leno");
+
+            Assert.AreEqual(modelSeries.Airs_DayOfWeek, "Daily");
+
+            Assert.IsTrue(modelSeries.Airs_Time.HasValue);
+            Assert.AreEqual(modelSeries.Airs_Time.Value, new TimeSpan(23, 35, 0));
+
+            Assert.IsNull(modelSeries.ContentRating);
+
+            Assert.IsTrue(modelSeries.FirstAired.HasValue);
+            Assert.AreEqual(modelSeries.FirstAired.Value, new DateTimeOffset(1992, 5, 25, 0, 0, 0, TimeSpan.Zero));
+
+            Assert.IsTrue(modelSeries.Genre.ToImmutableHashSet().SetEquals(new string[] { "Comedy", "Talk Show" }));
+
+            Assert.AreEqual(modelSeries.IMDB_ID, "tt0103569");
+            Assert.AreEqual(modelSeries.Language, "en");
+            Assert.AreEqual(modelSeries.Network, "NBC");
+            Assert.IsNull(modelSeries.NetworkID);
+            Assert.AreEqual(modelSeries.Overview, @"The Tonight Show with Jay Leno is an American late-night talk show currently hosted by Jay Leno, on NBC. It made its debut on May 25, 1992, following Johnny Carson's retirement as host of The Tonight Show. The nightly broadcast at 23:35 (Eastern) originates from NBC's studios, in Burbank, California.");
+
+            Assert.IsTrue(modelSeries.Rating.HasValue);
+            Assert.AreEqual(modelSeries.Rating.Value, 7.4f);
+
+            Assert.IsTrue(modelSeries.RatingCount.HasValue);
+            Assert.AreEqual<uint>(modelSeries.RatingCount.Value, 13);
+
+            Assert.IsTrue(modelSeries.Runtime.HasValue);
+            Assert.AreEqual<uint>(modelSeries.Runtime.Value, 60);
+
+            Assert.AreEqual(modelSeries.SeriesName, @"The Tonight Show with Jay Leno");
+            Assert.AreEqual(modelSeries.Status, linqtv.Model.StatusEnum.Ended);
+            Assert.IsFalse(modelSeries.added.HasValue);
+            Assert.IsFalse(modelSeries.addedBy.HasValue);
+            Assert.AreEqual(modelSeries.banner, @"graphical/70336-g.jpg");
+            Assert.AreEqual(modelSeries.fanart, @"fanart/original/70336-1.jpg");
+            Assert.AreEqual(modelSeries.lastupdated, DateTimeOffset.FromUnixTimeSeconds(1422299124));
+            Assert.AreEqual(modelSeries.poster, @"posters/70336-2.jpg");
+            Assert.AreEqual(modelSeries.zap2it_id, @"SH00004397");
+        }
+
     }
 }

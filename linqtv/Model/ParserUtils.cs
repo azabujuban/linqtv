@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
 using System.Xml.Linq;
+using System.Globalization;
 
 namespace linqtv.Model
 {
@@ -41,7 +42,8 @@ namespace linqtv.Model
         {
             try
             {
-                return DateTimeOffset.ParseExact((string)element.Element(name), dateTimeFormat, null);
+                return new DateTimeOffset(DateTime.ParseExact((string)element.Element(name), dateTimeFormat, CultureInfo.InvariantCulture),
+                                            TimeSpan.Zero);
             }
             catch
             {
@@ -54,6 +56,18 @@ namespace linqtv.Model
             try
             {
                 return DateTimeOffset.FromUnixTimeSeconds((long)element.Element(name));
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static TimeSpan? ElementAsTimeSpan(this XElement element, XName name, string timeSpanFormat)
+        {
+            try
+            {
+                return DateTime.ParseExact((string)element.Element(name), timeSpanFormat, CultureInfo.InvariantCulture).TimeOfDay;
             }
             catch
             {
