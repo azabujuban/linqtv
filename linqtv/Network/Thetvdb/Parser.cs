@@ -25,7 +25,7 @@ namespace linqtv.Network.Thetvdb
             _xmlStream = xmlStream;
         }
 
-        private void ParseXmlStream()
+        public Parser ParseXmlStream()
         {
             foreach (var e in Xml.StreamingAxis.AsEnumerable(_xmlStream, _interestingElements))
             {
@@ -36,7 +36,7 @@ namespace linqtv.Network.Thetvdb
                     _parsedShows.Add(Show.FromXElement(e));
             }
 
-
+            return this;
         }
 
         public IEnumerable<Show> Shows => _parsedShows;
