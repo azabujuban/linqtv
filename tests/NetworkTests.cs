@@ -1,5 +1,6 @@
 ﻿using linqtv.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RichardSzalay.MockHttp;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -28,6 +29,16 @@ namespace tests
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+        [TestMethod]
+        public async Task Network2()
+        {
+            var mockHttp = new MockHttpMessageHandler();
+
+
+            mockHttp.When("sdfsdf").WithQueryString("sfsf").Respond(new HttpClient());
+
         }
     }
 }
