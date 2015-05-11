@@ -13,7 +13,13 @@ namespace linqtv.Network
 {
     public class ZipHttpClient
     {
-        private HttpClient _httpClient = new HttpClient();
+        private readonly HttpClient _httpClient;
+
+        public ZipHttpClient(HttpMessageHandler handler = null)
+        {
+            _httpClient = new HttpClient(null == handler ? new HttpClientHandler() : handler);
+        }
+
 
         public async Task<IImmutableDictionary<string, Stream>> GetAsync(string uri, CancellationToken cancellationToken = default(CancellationToken))
         {
