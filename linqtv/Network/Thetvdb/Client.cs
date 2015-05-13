@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Immutable;
 using linqtv.Model;
 using System.Net.Http;
+using System.IO;
 
 namespace linqtv.Network.Thetvdb
 {
@@ -43,8 +44,17 @@ namespace linqtv.Network.Thetvdb
         private static string _seriesName = "seriesname";
 
 
-        public async Task<IImmutableList<Show>> GetSeriesByTitle(string seriesname, string language = "en")
+        private async Task<IImmutableDictionary<string, Stream>> RequestShowDetails(string seriesid, string language)
         {
+            var uri = Uri.EscapeUriString($"{BaseUrl}/api/{ApiKey}/series/{seriesid}/all/{language}.zip");
+            return await _zipHttpClient.GetAsync(uri);
+        }
+
+        public async Task<IImmutableList<Show>> GetSeriesByTitle(   string seriesname,
+                                                                    string language = "en",
+                                                                    IProgress<Show> progress = null)
+        {
+            var retList = ImmutableList<Show>.Empty;
             var uri = Uri.EscapeUriString($"{BaseUrl}/api/GetSeries.php?seriesname={seriesname}&language={language}");
 
             try
@@ -52,6 +62,22 @@ namespace linqtv.Network.Thetvdb
                 var foundSeriesStream = await (await _httpClient.GetAsync(uri)).Content.ReadAsStreamAsync();
                 var parsedShows = new Parser(foundSeriesStream).ParseXmlStream().Shows;
 
+                if (null != progress)
+                    foreach (var show in parsedShows) progress.Report(show);
+
+                var requestedDetails = parsedShows.Select(show => RequestShowDetails(show.id.ToString(), language)).ToList();
+
+                while (requestedDetails.Count > 0)
+                {
+                    var t = await Task.WhenAny(requestedDetails);
+                    requestedDetails.Remove(t);
+
+                    var parsedDetails = new Parser((await t)[$"{language}.zip"]).ParseXmlStream().Shows;
+                    retList = retList.AddRange(parsedDetails);
+
+                    if (null != progress)
+                        foreach (var show in parsedShows) progress.Report(show);
+                }
             }
             catch
             {
