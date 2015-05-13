@@ -12,9 +12,7 @@ namespace linqtv.Model
     public static class ParserUtils
     {
         public static IImmutableList<string> SplitByPipe(this string str) =>
-            str?.Split('|')
-            .Where(s => !(string.IsNullOrWhiteSpace(s) || string.IsNullOrEmpty(s)))
-            .Select(s => s.Trim()).ToImmutableList();
+            str?.Split(new [] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToImmutableList();
 
         public static TEnum? ParseEnum<TEnum>(string enumString) where TEnum: struct
         {
@@ -42,7 +40,11 @@ namespace linqtv.Model
         {
             try
             {
-                return new DateTimeOffset(DateTime.ParseExact((string)element.Element(name), dateTimeFormat, CultureInfo.InvariantCulture),
+                var valueToParse = (string)element.Element(name);
+                if (string.IsNullOrEmpty(valueToParse))
+                    return null;
+
+                return new DateTimeOffset(DateTime.ParseExact(valueToParse, dateTimeFormat, CultureInfo.InvariantCulture),
                                             TimeSpan.Zero);
             }
             catch

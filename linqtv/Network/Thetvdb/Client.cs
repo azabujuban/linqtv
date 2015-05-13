@@ -44,10 +44,10 @@ namespace linqtv.Network.Thetvdb
         private static string _seriesName = "seriesname";
 
 
-        private async Task<IImmutableDictionary<string, Stream>> RequestShowDetails(string seriesid, string language)
+        private Task<IImmutableDictionary<string, Stream>> RequestShowDetailsTask(string seriesid, string language)
         {
             var uri = Uri.EscapeUriString($"{BaseUrl}/api/{ApiKey}/series/{seriesid}/all/{language}.zip");
-            return await _zipHttpClient.GetAsync(uri);
+            return _zipHttpClient.GetAsync(uri);
         }
 
         public async Task<IImmutableList<Show>> GetSeriesByTitle(   string seriesname,
@@ -59,24 +59,45 @@ namespace linqtv.Network.Thetvdb
 
             try
             {
-                var foundSeriesStream = await (await _httpClient.GetAsync(uri)).Content.ReadAsStreamAsync();
-                var parsedShows = new Parser(foundSeriesStream).ParseXmlStream().Shows;
+                var response = await _httpClient.GetAsync(uri);
+                var responseStream = await response.Content.ReadAsStreamAsync();
+
+                var parsedShows = new Parser(responseStream).ParseXmlStream().Shows;
 
                 if (null != progress)
                     foreach (var show in parsedShows) progress.Report(show);
 
-                var requestedDetails = parsedShows.Select(show => RequestShowDetails(show.id.ToString(), language)).ToList();
+                var requestedDetails = parsedShows.Select(show => RequestShowDetailsTask(show.id.ToString(), language)).ToList();
 
                 while (requestedDetails.Count > 0)
                 {
-                    var t = await Task.WhenAny(requestedDetails);
-                    requestedDetails.Remove(t);
+                    try
+                    {
+                        var t = await Task.WhenAny(requestedDetails);
+                        requestedDetails.Remove(t);
 
-                    var parsedDetails = new Parser((await t)[$"{language}.zip"]).ParseXmlStream().Shows;
-                    retList = retList.AddRange(parsedDetails);
+                        var res = t.Result;
 
-                    if (null != progress)
-                        foreach (var show in parsedShows) progress.Report(show);
+                        var parsedDetails = new Parser((res)[$"{language}.xml"]).ParseXmlStream().Shows;
+                        retList = retList.AddRange(parsedDetails);
+
+                        if (null != progress)
+                            foreach (var show in parsedShows) progress.Report(show);
+                    }
+                    catch (AggregateException e)
+                    {
+                        e.Handle(exception =>
+                        {
+                            Console.WriteLine(exception.Message);
+                            return true;
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        //this means that for some reason we were not able to get the details
+                        //TODO: do we care?
+                    }
                 }
             }
             catch
@@ -86,7 +107,7 @@ namespace linqtv.Network.Thetvdb
             }
 
 
-            return ImmutableList<Show>.Empty;
+            return retList;
         }
 
         public async Task<IImmutableList<Show>> GetSeriesByImdb(         string imdbId,
