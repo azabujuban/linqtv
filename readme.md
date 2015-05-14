@@ -5,6 +5,7 @@
 
 This is very much work in progress. As a matter of fact what builds right now doesn't actually work at all. My aim is to have a test driven process and as such the first commit to master (which is supposed to be the working build) is just one test. See other branches where the work is actually being done.
 
+Currently active branch is [GH-1](https://github.com/azabujuban/linqtv/tree/GH-1)
 ## DSL
 
 ## Model
