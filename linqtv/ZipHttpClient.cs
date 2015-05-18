@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Threading;
 using System.Collections.Immutable;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace linqtv
 {
@@ -18,7 +18,6 @@ namespace linqtv
         {
             _httpClient = new HttpClient(null == handler ? new HttpClientHandler() : handler);
         }
-
 
         public async Task<IImmutableDictionary<string, Stream>> GetAsync(string uri, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -32,6 +31,5 @@ namespace linqtv
             var zipArchive = new ZipArchive(await response.Content.ReadAsStreamAsync());
             return zipArchive.Entries.Select(e => new KeyValuePair<string, Stream>(e.FullName, e.Open())).ToImmutableDictionary();
         }
-
     }
 }

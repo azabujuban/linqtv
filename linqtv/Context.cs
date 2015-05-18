@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using linqtv;
+﻿using linqtv.Linq;
 using linqtv.Model;
-using linqtv.Linq;
+using System.Linq;
 
 namespace linqtv
 {
@@ -17,6 +16,7 @@ namespace linqtv
         public IQueryable<Show> Shows { get; private set; }
 
         #region IDisposable Support
+
         private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -24,7 +24,7 @@ namespace linqtv
             if (_disposedValue) return;
             if (disposing)
             {
-                // TODO: dispose managed state (managed objects).          
+                // TODO: dispose managed state (managed objects).
             }
 
             // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
@@ -33,7 +33,7 @@ namespace linqtv
             _disposedValue = true;
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources. 
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
         // ~LinqToTVDB() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
@@ -47,6 +47,7 @@ namespace linqtv
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-        #endregion
+
+        #endregion IDisposable Support
     }
 }

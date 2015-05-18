@@ -1,17 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Immutable;
+﻿using Flurl;
 using linqtv.Model;
-using System.Net.Http;
+using System;
+using System.Collections.Immutable;
 using System.IO;
-using Flurl;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace linqtv
 {
     public class Client
     {
         public string BaseUrl { get; private set; }
+
         public string ApiKey { get; private set; }
 
         private ZipHttpClient _zipHttpClient;
@@ -42,13 +43,11 @@ namespace linqtv
         private static string _airdate = "airdate";
         private static string _seriesName = "seriesname";
 
-
         private Task<IImmutableDictionary<string, Stream>> RequestShowDetailsTask(string seriesid, string language)
         {
             var uri = Uri.EscapeUriString($"{BaseUrl}/api/{ApiKey}/series/{seriesid}/all/{language}.zip");
             return _zipHttpClient.GetAsync(uri);
         }
-
 
         private async Task<IImmutableList<Show>> GetSeries(Url reqUri, string language, IProgress<Show> progress)
         {
@@ -104,33 +103,29 @@ namespace linqtv
                 return ImmutableList<Show>.Empty;
             }
 
-
             return retList;
         }
 
-        public async Task<IImmutableList<Show>> GetSeriesByTitle(       string seriesname,
+        public async Task<IImmutableList<Show>> GetSeriesByTitle(string seriesname,
                                                                         string language = "en",
                                                                         IProgress<Show> progress = null) =>
             await GetSeries(new Url($"{BaseUrl}/api/GetSeries.php").SetQueryParam(nameof(seriesname), seriesname), language, progress);
 
-
-        public async Task<IImmutableList<Show>> GetSeriesByImdb(        string imdbid,
+        public async Task<IImmutableList<Show>> GetSeriesByImdb(string imdbid,
                                                                         string language = "en",
                                                                         IProgress<Show> progress = null) =>
             await GetSeries(new Url($"{BaseUrl}/api/GetSeriesByRemoteID.php").SetQueryParam(nameof(imdbid), imdbid), language, progress);
 
-        public async Task<IImmutableList<Show>> GetSeriesByZap2it(      string zap2it,
+        public async Task<IImmutableList<Show>> GetSeriesByZap2it(string zap2it,
                                                                         string language = "en",
                                                                         IProgress<Show> progress = null) =>
             await GetSeries(new Url($"{BaseUrl}/api/GetSeriesByRemoteID.php").SetQueryParam(nameof(zap2it), zap2it), language, progress);
 
-        public async Task<IImmutableList<Episode>> GetEpisodeByAirDate(  DateTimeOffset airDate,
+        public async Task<IImmutableList<Episode>> GetEpisodeByAirDate(DateTimeOffset airDate,
                                                                                 Show show,
-                                                                                string language="en")
+                                                                                string language = "en")
         {
             throw new NotImplementedException(nameof(GetEpisodeByAirDate));
         }
-
-
     }
 }
