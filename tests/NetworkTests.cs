@@ -53,5 +53,29 @@ namespace tests
             mockedMessageHandler.VerifyNoOutstandingExpectation();
             mockedMessageHandler.VerifyNoOutstandingRequest();
         }
+
+        [TestMethod]
+        public async Task Network3()
+        {
+            var getSeriesResponse = new ByteArrayContent(System.IO.File.ReadAllBytes("CannedResponses/getseries1.xml"));
+            var getAllResponse = new ByteArrayContent(System.IO.File.ReadAllBytes("CannedResponses/en1.zip"));
+            getAllResponse.Headers.ContentType = MediaTypeHeaderValue.Parse("application/zip");
+
+
+            var mockedMessageHandler = new MockHttpMessageHandler();
+            mockedMessageHandler.Expect("*api/GetSeries.php?seriesname=jay").Respond(getSeriesResponse);
+            mockedMessageHandler.Expect("*api/17D761404C40D3C4/series/70336/all/en.zip").Respond(getAllResponse);
+
+
+            var client = Client.Create(apiKey: "17D761404C40D3C4", handler: mockedMessageHandler);
+            var series = await client.GetSeriesByTitle("jay");
+
+            Assert.AreEqual(series.Count, 1); //even though more returned by GetSeries.php we can only get details for one
+
+            mockedMessageHandler.VerifyNoOutstandingExpectation();
+            mockedMessageHandler.VerifyNoOutstandingRequest();
+        }
+
     }
+
 }

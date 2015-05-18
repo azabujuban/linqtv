@@ -23,7 +23,7 @@ namespace linqtv
 
         public Parser ParseXmlStream()
         {
-            foreach (var e in Xml.StreamingAxis.AsEnumerable(_xmlStream, _interestingElements))
+            foreach (var e in StreamingAxis.AsEnumerable(_xmlStream, _interestingElements))
             {
                 if (_episodeConstant.Equals(e.Name.LocalName, StringComparison.OrdinalIgnoreCase))
                     _parsedEpisodes.Add(Episode.FromXElement(e));
