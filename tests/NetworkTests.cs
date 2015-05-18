@@ -47,6 +47,7 @@ namespace tests
             var series = await client.GetSeriesByTitle("jay");
 
             Assert.AreEqual(series.Count, 1); //even though more returned by GetSeries.php we can only get details for one
+            Assert.AreEqual(series[0].Episodes.Count, 2117);
 
             mockedMessageHandler.VerifyNoOutstandingExpectation();
             mockedMessageHandler.VerifyNoOutstandingRequest();
@@ -67,6 +68,7 @@ namespace tests
             var series = await client.GetSeriesByImdb("tt0290978");
 
             Assert.AreEqual(series.Count, 1); //even though more returned by GetSeries.php we can only get details for one
+            Assert.AreEqual(series[0].Episodes, 18);
 
             mockedMessageHandler.VerifyNoOutstandingExpectation();
             mockedMessageHandler.VerifyNoOutstandingRequest();
@@ -106,6 +108,7 @@ namespace tests
             var series = await client.GetSeriesByZap2it("EP01407658");
 
             Assert.AreEqual(series.Count, 1); //even though more returned by GetSeries.php we can only get details for one
+            Assert.AreEqual(series[0].Episodes.Count, 85);
 
             mockedMessageHandler.VerifyNoOutstandingExpectation();
             mockedMessageHandler.VerifyNoOutstandingRequest();

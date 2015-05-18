@@ -67,6 +67,6 @@ namespace linqtv.Model
         public string poster { get; private set; }
         public string zap2it_id { get; private set; }
 
-        public IEnumerable<Episode> Episodes {get; private set; }
+        public IList<Episode> Episodes {get; private set; }
     }
 }
