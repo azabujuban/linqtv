@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
 using linqtv.Model;
 using System.Net.Http;
 using System.IO;
 
-namespace linqtv.Network.Thetvdb
+namespace linqtv
 {
     public class Client
     {

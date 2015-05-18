@@ -1,5 +1,4 @@
-﻿using linqtv.Network;
-using linqtv.Network.Thetvdb;
+﻿using linqtv;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 using System;
@@ -53,9 +52,6 @@ namespace tests
 
             mockedMessageHandler.VerifyNoOutstandingExpectation();
             mockedMessageHandler.VerifyNoOutstandingRequest();
-            
-
-
         }
     }
 }
