@@ -63,7 +63,7 @@ namespace linqtv
             return parser.Shows;
         }
 
-        private async Task<IImmutableList<Show>> GetSeries(Url reqUri, string language, IProgress<Show> progress)
+        private async Task<IImmutableList<Show>> GetSeries(Url reqUri, string language, IProgress<Show> progress = null)
         {
             reqUri.SetQueryParam(nameof(language), language);
 
@@ -134,11 +134,34 @@ namespace linqtv
                                                                         IProgress<Show> progress = null) =>
             await GetSeries(new Url($"{BaseUrl}/api/GetSeriesByRemoteID.php").SetQueryParam(nameof(zap2it), zap2it), language, progress);
 
-        public async Task<IImmutableList<Episode>> GetEpisodeByAirDate(DateTimeOffset airDate,
-                                                                                Show show,
+        public async Task<IImmutableList<Episode>> GetEpisodeByAirDate(DateTime airdate,
+                                                                                uint seriesid,
                                                                                 string language = "en")
         {
-            throw new NotImplementedException(nameof(GetEpisodeByAirDate));
+            var retList = ImmutableList<Episode>.Empty;
+
+            var reqUri = new Url($"{BaseUrl}/api/GetEpisodeByAirDate.php")
+                            .SetQueryParam(nameof(language), language)
+                            .SetQueryParam("apikey", ApiKey)
+                            .SetQueryParam(nameof(seriesid), seriesid)
+                            .SetQueryParam(nameof(airdate), $"{airdate.Year}-{airdate.Month:00}-{airdate.Day:00}");
+
+
+            try
+            {
+                var response = await _httpClient.GetAsync(reqUri);
+                var responseStream = await response.Content.ReadAsStreamAsync();
+
+                retList = retList.AddRange(new Parser(responseStream).ParseXmlStream().Episodes);
+            }
+            catch
+            {
+
+            }
+
+            return retList;
         }
     }
+
+
 }

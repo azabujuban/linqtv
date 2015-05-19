@@ -131,5 +131,37 @@ namespace tests
             mockedMessageHandler.VerifyNoOutstandingExpectation();
             mockedMessageHandler.VerifyNoOutstandingRequest();
         }
+        [TestMethod]
+        public async Task Network7()
+        {
+            var airdate_247808 = new ByteArrayContent(System.IO.File.ReadAllBytes("CannedResponses/airdate_247808_2012-06-19.xml"));
+
+            var mockedMessageHandler = new MockHttpMessageHandler();
+            mockedMessageHandler.Expect("*/api/GetEpisodeByAirDate.php?seriesid=247808&airdate=2012-06-19&apikey=17D761404C40D3C4")
+                                .Respond(airdate_247808);
+
+            var client = Client.Create(apiKey: "17D761404C40D3C4", handler: mockedMessageHandler);
+            var episodes = await client.GetEpisodeByAirDate(new DateTime(2012, 6, 19), 247808);
+
+            Assert.AreEqual(episodes.Count, 1);
+
+            mockedMessageHandler.VerifyNoOutstandingExpectation();
+            mockedMessageHandler.VerifyNoOutstandingRequest();
+        }
+
+        [TestMethod]
+        public async Task Network8()
+        {
+            var airdate_247808 = new ByteArrayContent(System.IO.File.ReadAllBytes("CannedResponses/airdate_247808_2012-06-19.xml"));
+
+            var mockedMessageHandler = new MockHttpMessageHandler();
+            mockedMessageHandler.Expect("*/api/GetEpisodeByAirDate.php?seriesid=SOMEOTHERID&airdate=2012-06-19&apikey=17D761404C40D3C4")
+                                .Respond(airdate_247808);
+
+            var client = Client.Create(apiKey: "17D761404C40D3C4", handler: mockedMessageHandler);
+            var episodes = await client.GetEpisodeByAirDate(new DateTime(2012, 6, 19), 247808);
+
+            Assert.AreEqual(episodes.Count, 0);
+        }
     }
 }

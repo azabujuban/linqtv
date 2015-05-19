@@ -118,6 +118,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CannedResponses\airdate_247808_2012-06-19.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="CannedResponses\getseries1.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
