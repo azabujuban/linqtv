@@ -1,6 +1,7 @@
 ﻿using Flurl;
 using linqtv.Model;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -49,6 +50,19 @@ namespace linqtv
             return _zipHttpClient.GetAsync(uri);
         }
 
+        private IEnumerable<Show> ParseShowAndEpisode(Parser parser)
+        {
+            parser.ParseXmlStream();
+            var grouped = from s in parser.Shows
+                          join e in parser.Episodes on s.id equals e.seriesid into groupedEpisodes
+                          select new { Episodes = groupedEpisodes, Show = s };
+
+            foreach (var g in grouped)
+                g.Show.Episodes = g.Episodes;
+
+            return parser.Shows;
+        }
+
         private async Task<IImmutableList<Show>> GetSeries(Url reqUri, string language, IProgress<Show> progress)
         {
             reqUri.SetQueryParam(nameof(language), language);
@@ -73,13 +87,12 @@ namespace linqtv
                         var t = await Task.WhenAny(requestedDetails);
                         requestedDetails.Remove(t);
 
-                        var res = t.Result;
-
-                        var parsedDetails = new Parser((res)[$"{language}.xml"]).ParseXmlStream().Shows;
-                        retList = retList.AddRange(parsedDetails);
+                        var parsedEverything = ParseShowAndEpisode(new Parser((t.Result)[$"{language}.xml"]));
 
                         if (null != progress)
-                            foreach (var show in parsedShows) progress.Report(show);
+                            foreach (var show in parsedEverything) progress.Report(show);
+
+                        retList = retList.AddRange(parsedEverything);
                     }
                     catch (AggregateException e)
                     {
