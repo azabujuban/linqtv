@@ -52,7 +52,10 @@
     <Reference Include="Microsoft.Bcl.Build.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.Tasks.dll</HintPath>
     </Reference>
-    <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b" />
+    <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.0.0-alpha-004\lib\net45\Remotion.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RichardSzalay.MockHttp, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RichardSzalay.MockHttp.1.2.1\lib\net45\RichardSzalay.MockHttp.dll</HintPath>
       <Private>True</Private>
@@ -89,7 +92,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="FakeDataContext.cs" />
     <Compile Include="NetworkTests.cs" />
     <Compile Include="QueryTests.cs" />
     <Compile Include="UnitTest1.cs" />

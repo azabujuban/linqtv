@@ -48,7 +48,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Remotion.Linq.2.0.0-alpha-003\lib\net40\Remotion.Linq.dll</HintPath>
+      <HintPath>..\packages\Remotion.Linq.2.0.0-alpha-004\lib\net45\Remotion.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -68,8 +68,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context.cs" />
-    <Compile Include="IContext.cs" />
     <Compile Include="Linq\TvdbQueryable.cs" />
     <Compile Include="Linq\TvdbQueryExecutor.cs" />
     <Compile Include="Linq\TvdbQueryExpressionVisitor.cs" />
