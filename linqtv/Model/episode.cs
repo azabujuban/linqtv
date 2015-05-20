@@ -18,7 +18,7 @@ namespace linqtv.Model
 
     public class Episode
     {
-        public Show Show { get; private set; }
+        public Show Show { get; }
 
         public static Episode FromXElement(XElement e) => new Episode()
         {

@@ -12,13 +12,13 @@ namespace linqtv
 {
     public class Client
     {
-        public string BaseUrl { get; private set; }
+        public string BaseUrl { get; }
 
-        public string ApiKey { get; private set; }
+        public string ApiKey { get; }
 
         private ZipHttpClient _zipHttpClient;
         private HttpClient _httpClient;
-        private static Show _show; //this is just so we could use nameof()
+        private static Show _show = null; //this is just so we could use nameof()
 
         public static Client Create(string baseUrl = "http://thetvdb.com", string apiKey = "", HttpMessageHandler handler = null)
         {
