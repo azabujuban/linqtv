@@ -18,6 +18,7 @@ namespace linqtv
 
         private ZipHttpClient _zipHttpClient;
         private HttpClient _httpClient;
+        private static Show _show; //this is just so we could use nameof()
 
         public static Client Create(string baseUrl = "http://thetvdb.com", string apiKey = "", HttpMessageHandler handler = null)
         {
@@ -28,6 +29,19 @@ namespace linqtv
                 throw new ArgumentException($"Either {nameof(baseUrl)} or {nameof(apiKey)} are null or empty");
 
             return new Client(baseUrl, apiKey, null == handler ? new HttpClientHandler() : handler);
+        }
+
+        //need to make this whole thing type-safe, lets see how to do it in the future
+        public async Task<IEnumerable<Show>> GetShows(IDictionary<string, string> queryParameters)
+        {
+            if (default(IDictionary<string, string>) == queryParameters.DefaultIfEmpty())
+                return Enumerable.Empty<Show>();
+
+            //unfortunately all we can really query for is the show name
+            if (!queryParameters.ContainsKey(nameof(_show.SeriesName)))
+                return Enumerable.Empty<Show>();
+
+            return await GetSeriesByTitle(queryParameters[nameof(_show.SeriesName)]);
         }
 
         private Client(string baseUrl, string apiKey, HttpMessageHandler handler)

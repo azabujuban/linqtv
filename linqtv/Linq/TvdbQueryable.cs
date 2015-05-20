@@ -5,10 +5,10 @@ namespace linqtv.Linq
 {
     public class TvdbQueryable<T> : Remotion.Linq.QueryableBase<T>
     {
-        private static Remotion.Linq.IQueryExecutor CreateExecutor() => new TvdbQueryExecutor();
+        private static Remotion.Linq.IQueryExecutor CreateExecutor(string apiKey) => new TvdbQueryExecutor(apiKey);
 
-        public TvdbQueryable()
-        : base(Remotion.Linq.Parsing.Structure.QueryParser.CreateDefault(), CreateExecutor())
+        public TvdbQueryable(string apiKey)
+        : base(Remotion.Linq.Parsing.Structure.QueryParser.CreateDefault(), CreateExecutor(apiKey))
         {
 
         }

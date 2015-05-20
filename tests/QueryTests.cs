@@ -12,7 +12,8 @@ namespace tests
     [TestClass]
     public class QueryTests
     {
-        private IQueryable<Show> Base => new TvdbQueryable<Show>();
+        private static string _apiKey = "17D761404C40D3C4";
+        private IQueryable<Show> Base => new TvdbQueryable<Show>(_apiKey);
         private QueryParser Parser => QueryParser.CreateDefault();
 
         [TestMethod]
@@ -26,6 +27,18 @@ namespace tests
             
 
             CollectionAssert.AreEquivalent(url_params.ToList(), new Dictionary<string, string> {["SeriesName"] = "somestring" }.ToList());
+        }
+        [TestMethod]
+        public void QueryTest2()
+        {
+            var hh = from s in new TvdbQueryable<Show>(_apiKey)
+                     where s.SeriesName == "the office"
+                     select s;
+
+
+            var shows = hh.ToList();
+
+            Assert.AreEqual(shows.Count, 7);
 
 
         }
