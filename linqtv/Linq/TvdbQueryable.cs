@@ -10,12 +10,10 @@ namespace linqtv.Linq
         public TvdbQueryable(string apiKey)
         : base(Remotion.Linq.Parsing.Structure.QueryParser.CreateDefault(), CreateExecutor(apiKey))
         {
-
         }
 
         public TvdbQueryable(IQueryProvider provider, Expression expression) : base(provider, expression)
         {
         }
-
     }
 }

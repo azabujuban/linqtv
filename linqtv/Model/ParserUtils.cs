@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.Immutable;
-using System.Xml.Linq;
 using System.Globalization;
+using System.Xml.Linq;
 
 namespace linqtv.Model
 {
     public static class ParserUtils
     {
         public static IImmutableList<string> SplitByPipe(this string str) =>
-            str?.Split(new [] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToImmutableList();
+            str?.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToImmutableList();
 
-        public static TEnum? ParseEnum<TEnum>(string enumString) where TEnum: struct
+        public static TEnum? ParseEnum<TEnum>(string enumString) where TEnum : struct
         {
             if (string.IsNullOrEmpty(enumString))
                 return null;

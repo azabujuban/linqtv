@@ -1,8 +1,8 @@
 ﻿using Remotion.Linq.Parsing;
 using System;
-using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq.Expressions;
 
 namespace linqtv.Linq
 {
@@ -47,7 +47,6 @@ namespace linqtv.Linq
             var rightConstant = Visit(expression.Right) as ConstantExpression;
 
             AccumulatedParams = AccumulatedParams.SetItem(leftMember.Member.Name, rightConstant.Value as string);
-
 
             return expression;
         }

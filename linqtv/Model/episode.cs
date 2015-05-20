@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Globalization;
 using System.Xml.Linq;
-using System.Linq;
 
 namespace linqtv.Model
 {
@@ -55,34 +53,63 @@ namespace linqtv.Model
         };
 
         public uint id { get; private set; }
+
         public float Combined_episodenumber { get; private set; }
+
         public float Combined_season { get; private set; }
+
         public float? DVD_episodenumber { get; private set; }
+
         public uint? DVD_season { get; private set; }
+
         public IImmutableList<string> Director { get; private set; }
+
         public EpImgFlagEnum? EpImgFlag { get; private set; }
+
         public string EpisodeName { get; private set; }
+
         public uint EpisodeNumber { get; private set; }
+
         public DateTimeOffset? FirstAired { get; private set; }
+
         public IImmutableList<string> GuestStars { get; private set; }
+
         public string IMDB_ID { get; private set; }
+
         public string Language { get; private set; }
+
         public string Overview { get; private set; }
+
         public string ProductionCode { get; private set; }
+
         public float? Rating { get; private set; }
+
         public uint? RatingCount { get; private set; }
+
         public uint? SeasonNumber { get; private set; }
+
         public IImmutableList<string> Writer { get; private set; }
+
         public uint? absolute_number { get; private set; }
+
         public uint? airsafter_season { get; private set; }
+
         public uint? airsbefore_episode { get; private set; }
+
         public uint? airsbefore_season { get; private set; }
+
         public string filename { get; private set; }
+
         public DateTimeOffset? lastupdated { get; private set; }
+
         public uint? seasonid { get; private set; }
+
         public uint seriesid { get; private set; }
+
         public DateTimeOffset? thumb_added { get; private set; }
+
         public uint? thumb_height { get; private set; }
+
         public uint? thumb_width { get; private set; }
     }
 }

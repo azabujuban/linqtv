@@ -1,11 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
-using linqtv.Linq;
+﻿using linqtv.Linq;
 using linqtv.Model;
-using System.Linq.Expressions;
-using Remotion.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Remotion.Linq.Parsing.Structure;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace tests
 {
@@ -13,7 +11,9 @@ namespace tests
     public class QueryTests
     {
         private static string _apiKey = "17D761404C40D3C4";
+
         private IQueryable<Show> Base => new TvdbQueryable<Show>(_apiKey);
+
         private QueryParser Parser => QueryParser.CreateDefault();
 
         [TestMethod]
@@ -24,10 +24,9 @@ namespace tests
 
             var url_params = TvdbQueryGeneratorQueryModelVisitor.GenerateUrlParams(Parser.GetParsedQuery(query.Expression));
 
-            
-
             CollectionAssert.AreEquivalent(url_params.ToList(), new Dictionary<string, string> {["SeriesName"] = "somestring" }.ToList());
         }
+
         [TestMethod]
         public void QueryTest2()
         {
@@ -35,12 +34,9 @@ namespace tests
                      where s.SeriesName == "the office"
                      select s;
 
-
             var shows = hh.ToList();
 
             Assert.AreEqual(shows.Count, 7);
-
-
         }
     }
 }

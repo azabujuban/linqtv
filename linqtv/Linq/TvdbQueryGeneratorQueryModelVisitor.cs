@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Remotion.Linq;
 using Remotion.Linq.Clauses;
-using Remotion.Linq;
+using System.Collections.Generic;
 
 namespace linqtv.Linq
 {
     public class TvdbQueryGeneratorQueryModelVisitor : QueryModelVisitorBase
     {
         private IDictionary<string, string> AccumulatedParams { get; set; }
+
         public static IDictionary<string, string> GenerateUrlParams(QueryModel queryModel)
         {
             var visitor = new TvdbQueryGeneratorQueryModelVisitor();

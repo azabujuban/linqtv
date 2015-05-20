@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Xml.Linq;
 using System.Collections.Immutable;
+using System.Xml.Linq;
 
 namespace tests
 {
@@ -42,7 +42,7 @@ namespace tests
   <thumb_added></thumb_added>
   <thumb_height></thumb_height>
   <thumb_width></thumb_width>
-</Episode>            
+</Episode>
             ");
 
             var modelEpisode = linqtv.Model.Episode.FromXElement(goodEpisodeXml);
@@ -74,7 +74,6 @@ namespace tests
 
             Assert.IsTrue(modelEpisode.RatingCount.HasValue);
             Assert.AreEqual<uint>(modelEpisode.RatingCount.Value, 0);
-
 
             Assert.IsTrue(modelEpisode.SeasonNumber.HasValue);
             Assert.AreEqual<uint>(modelEpisode.SeasonNumber.Value, 1);
@@ -174,6 +173,5 @@ namespace tests
             Assert.AreEqual(modelSeries.poster, @"posters/70336-2.jpg");
             Assert.AreEqual(modelSeries.zap2it_id, @"SH00004397");
         }
-
     }
 }

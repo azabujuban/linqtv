@@ -2,10 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace tests
 {
@@ -131,6 +131,7 @@ namespace tests
             mockedMessageHandler.VerifyNoOutstandingExpectation();
             mockedMessageHandler.VerifyNoOutstandingRequest();
         }
+
         [TestMethod]
         public async Task Network7()
         {

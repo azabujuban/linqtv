@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using linqtv;
-using System.Linq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace tests
 {
@@ -35,7 +32,6 @@ namespace tests
 
         //        }
         //    }
-
 
         //    [TestMethod]
         //    public void TestMethod2()

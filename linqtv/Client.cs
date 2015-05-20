@@ -160,7 +160,6 @@ namespace linqtv
                             .SetQueryParam(nameof(seriesid), seriesid)
                             .SetQueryParam(nameof(airdate), $"{airdate.Year}-{airdate.Month:00}-{airdate.Day:00}");
 
-
             try
             {
                 var response = await _httpClient.GetAsync(reqUri);
@@ -170,12 +169,9 @@ namespace linqtv
             }
             catch
             {
-
             }
 
             return retList;
         }
     }
-
-
 }
