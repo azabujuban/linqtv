@@ -3,9 +3,9 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Xml.Linq;
 
-namespace linqtv.Model
+namespace Linqtv.Model
 {
-    public static class ParserUtils
+    internal static class ParserUtils
     {
         public static IImmutableList<string> SplitByPipe(this string str) =>
             str?.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToImmutableList();
@@ -17,16 +17,17 @@ namespace linqtv.Model
 
             TEnum outEnum;
             if (!Enum.TryParse(enumString, true, out outEnum))
-                throw new ArgumentException($"{enumString} doesn't look like a {typeof(TEnum)}");
+                throw new ArgumentException(StringUtilities.Invariant($"{enumString} doesn't look like a {typeof(TEnum)}"));
 
-            return new TEnum?(outEnum);
+            return outEnum;
         }
 
         public static XElement ElementOrNull(this XElement element, XName name)
         {
             var retElement = element.Element(name);
+            var elementValue = retElement?.Value;
 
-            if (string.IsNullOrEmpty(retElement?.Value) || string.IsNullOrWhiteSpace(retElement?.Value))
+            if (string.IsNullOrEmpty(elementValue) || string.IsNullOrWhiteSpace(elementValue))
                 return null;
 
             return retElement;
@@ -36,14 +37,15 @@ namespace linqtv.Model
         {
             try
             {
-                var valueToParse = (string)element.Element(name);
-                if (string.IsNullOrEmpty(valueToParse))
+                var valueToParse = (string)element.ElementOrNull(name);
+                if (valueToParse == null)
                     return null;
 
-                return new DateTimeOffset(DateTime.ParseExact(valueToParse, dateTimeFormat, CultureInfo.InvariantCulture),
-                                            TimeSpan.Zero);
+                return
+                    new DateTimeOffset(DateTime.ParseExact(valueToParse, dateTimeFormat, CultureInfo.InvariantCulture),
+                        TimeSpan.Zero);
             }
-            catch
+            catch (Exception e) when (e.GetType() == typeof(FormatException))
             {
                 return null;
             }
@@ -53,9 +55,13 @@ namespace linqtv.Model
         {
             try
             {
-                return DateTimeOffset.FromUnixTimeSeconds((long)element.Element(name));
+                var valueToParse = element.ElementOrNull(name);
+                if (valueToParse == null)
+                    return null;
+
+                return DateTimeOffset.FromUnixTimeSeconds((long)valueToParse);
             }
-            catch
+            catch (Exception e) when (e.GetType() == typeof(FormatException))
             {
                 return null;
             }
@@ -65,9 +71,13 @@ namespace linqtv.Model
         {
             try
             {
-                return DateTime.ParseExact((string)element.Element(name), timeSpanFormat, CultureInfo.InvariantCulture).TimeOfDay;
+                var valueToParse = element.ElementOrNull(name);
+                if (valueToParse == null)
+                    return null;
+
+                return DateTime.ParseExact((string)valueToParse, timeSpanFormat, CultureInfo.InvariantCulture).TimeOfDay;
             }
-            catch
+            catch (Exception e) when (e.GetType() == typeof(FormatException))
             {
                 return null;
             }

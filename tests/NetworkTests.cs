@@ -1,4 +1,4 @@
-﻿using linqtv;
+﻿using Linqtv;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 using System;
@@ -15,7 +15,7 @@ namespace tests
         [TestMethod]
         public async Task Network1()
         {
-            var uri = "http://thetvdb.com/api/17D761404C40D3C4/series/70336/all/en.zip";
+            var uri = new Uri("http://thetvdb.com/api/17D761404C40D3C4/series/70336/all/en.zip");
             var zipClient = new ZipHttpClient();
 
             var someData = zipClient.GetAsync(uri);
@@ -44,7 +44,7 @@ namespace tests
             mockedMessageHandler.Expect("*api/GetSeries.php?seriesname=jay").Respond(getSeriesResponse);
             mockedMessageHandler.Expect("*api/17D761404C40D3C4/series/70336/all/en.zip").Respond(getAllResponse);
 
-            var client = Client.Create(apiKey: "17D761404C40D3C4", handler: mockedMessageHandler);
+            var client = Client.Create("17D761404C40D3C4", mockedMessageHandler);
             var series = await client.GetSeriesByTitle("jay");
 
             Assert.AreEqual(series.Count, 1); //even though more returned by GetSeries.php we can only get details for one
@@ -106,7 +106,7 @@ namespace tests
             mockedMessageHandler.Expect("*api/17D761404C40D3C4/series/247808/all/en.zip").Respond(getSeries_247808);
 
             var client = Client.Create(apiKey: "17D761404C40D3C4", handler: mockedMessageHandler);
-            var series = await client.GetSeriesByZap2it("EP01407658");
+            var series = await client.GetSeriesByZap2It("EP01407658");
 
             Assert.AreEqual(series.Count, 1); //even though more returned by GetSeries.php we can only get details for one
             Assert.AreEqual(series[0].Episodes.ToList().Count, 85);
@@ -124,7 +124,7 @@ namespace tests
             mockedMessageHandler.Expect("*api/GetSeriesByRemoteID.php?zap2it=EP01407658-notreallygoodid").Respond(imdbRemote_EP01407658);
 
             var client = Client.Create(apiKey: "17D761404C40D3C4", handler: mockedMessageHandler);
-            var series = await client.GetSeriesByZap2it("EP01407658-notreallygoodid");
+            var series = await client.GetSeriesByZap2It("EP01407658-notreallygoodid");
 
             Assert.AreEqual(series.Count, 0); //even though more returned by GetSeries.php we can only get details for one
 
@@ -142,7 +142,7 @@ namespace tests
                                 .Respond(airdate_247808);
 
             var client = Client.Create(apiKey: "17D761404C40D3C4", handler: mockedMessageHandler);
-            var episodes = await client.GetEpisodeByAirDate(new DateTime(2012, 6, 19), 247808);
+            var episodes = await client.GetEpisodeByAirdate(new DateTime(2012, 6, 19), 247808);
 
             Assert.AreEqual(episodes.Count, 1);
 
@@ -160,7 +160,7 @@ namespace tests
                                 .Respond(airdate_247808);
 
             var client = Client.Create(apiKey: "17D761404C40D3C4", handler: mockedMessageHandler);
-            var episodes = await client.GetEpisodeByAirDate(new DateTime(2012, 6, 19), 247808);
+            var episodes = await client.GetEpisodeByAirdate(new DateTime(2012, 6, 19), 247808);
 
             Assert.AreEqual(episodes.Count, 0);
         }

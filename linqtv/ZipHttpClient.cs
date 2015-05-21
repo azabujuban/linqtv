@@ -8,18 +8,28 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace linqtv
+namespace Linqtv
 {
-    public class ZipHttpClient
+    public class ZipHttpClient : IDisposable
     {
-        private readonly HttpClient _httpClient;
+        private HttpClient _httpClient;
 
-        public ZipHttpClient(HttpMessageHandler handler = null)
+        public ZipHttpClient()
         {
-            _httpClient = new HttpClient(null == handler ? new HttpClientHandler() : handler);
+            _httpClient = new HttpClient();
         }
 
-        public async Task<IImmutableDictionary<string, Stream>> GetAsync(string uri, CancellationToken cancellationToken = default(CancellationToken))
+        public ZipHttpClient(HttpMessageHandler handler)
+        {
+            _httpClient = new HttpClient(handler);
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is an async method.")]
+        public Task<IImmutableDictionary<string, Stream>> GetAsync(Uri uri) => GetAsync(uri, CancellationToken.None);
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is an async method.")]
+        public async Task<IImmutableDictionary<string, Stream>> GetAsync(Uri uri,
+            CancellationToken cancellationToken)
         {
             var response = await _httpClient.GetAsync(uri, cancellationToken);
             response.EnsureSuccessStatusCode();
@@ -30,6 +40,30 @@ namespace linqtv
 
             var zipArchive = new ZipArchive(await response.Content.ReadAsStreamAsync());
             return zipArchive.Entries.Select(e => new KeyValuePair<string, Stream>(e.FullName, e.Open())).ToImmutableDictionary();
+        }
+
+        private bool IsDisposed { get; set; }
+
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool isDisposing)
+        {
+            try
+            {
+                if (IsDisposed) return;
+                if (!isDisposing) return;
+                _httpClient.Dispose();
+                _httpClient = null;
+            }
+            finally
+            {
+                IsDisposed = true;
+            }
         }
     }
 }

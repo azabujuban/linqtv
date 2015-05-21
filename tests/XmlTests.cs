@@ -45,7 +45,7 @@ namespace tests
 </Episode>
             ");
 
-            var modelEpisode = linqtv.Model.Episode.FromXElement(goodEpisodeXml);
+            var modelEpisode = Linqtv.Model.Episode.FromXElement(goodEpisodeXml);
 
             Assert.AreEqual<uint>(modelEpisode.id, 2673);
             Assert.AreEqual(modelEpisode.Combined_episodenumber, 6);
@@ -130,7 +130,7 @@ namespace tests
 
             ");
 
-            var modelSeries = linqtv.Model.Show.FromXElement(goodSeriesXml);
+            var modelSeries = Linqtv.Model.Show.FromXElement(goodSeriesXml);
             Assert.AreEqual<uint>(modelSeries.id, 70336);
 
             Assert.IsNotNull(modelSeries.Actors);
@@ -164,7 +164,7 @@ namespace tests
             Assert.AreEqual<uint>(modelSeries.Runtime.Value, 60);
 
             Assert.AreEqual(modelSeries.SeriesName, @"The Tonight Show with Jay Leno");
-            Assert.AreEqual(modelSeries.Status, linqtv.Model.StatusEnum.Ended);
+            Assert.AreEqual(modelSeries.Status, Linqtv.Model.Status.Ended);
             Assert.IsFalse(modelSeries.added.HasValue);
             Assert.IsFalse(modelSeries.addedBy.HasValue);
             Assert.AreEqual(modelSeries.banner, @"graphical/70336-g.jpg");

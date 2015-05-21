@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using linqtv.Model;
+using Linqtv.Model;
 
-namespace linqtv
+namespace Linqtv
 {
     public class Parser
     {
@@ -11,10 +11,10 @@ namespace linqtv
 
         private readonly List<Show> _parsedShows = new List<Show>();
         private readonly List<Episode> _parsedEpisodes = new List<Episode>();
-        private readonly static HashSet<string> _interestingElements = new HashSet<string> { _episodeConstant, _seriesConstant };
+        private readonly static HashSet<string> InterestingElements = new HashSet<string> { EpisodeConstant, SeriesConstant };
 
-        private const string _episodeConstant = "Episode";
-        private const string _seriesConstant = "Series";
+        private const string EpisodeConstant = "Episode";
+        private const string SeriesConstant = "Series";
 
         public Parser(Stream xmlStream)
         {
@@ -23,12 +23,12 @@ namespace linqtv
 
         public Parser ParseXmlStream()
         {
-            foreach (var e in StreamingAxis.AsEnumerable(_xmlStream, _interestingElements))
+            foreach (var e in StreamingAxis.AsEnumerable(_xmlStream, InterestingElements))
             {
-                if (_episodeConstant.Equals(e.Name.LocalName, StringComparison.OrdinalIgnoreCase))
+                if (EpisodeConstant.Equals(e.Name.LocalName, StringComparison.OrdinalIgnoreCase))
                     _parsedEpisodes.Add(Episode.FromXElement(e));
 
-                if (_seriesConstant.Equals(e.Name.LocalName, StringComparison.OrdinalIgnoreCase))
+                if (SeriesConstant.Equals(e.Name.LocalName, StringComparison.OrdinalIgnoreCase))
                     _parsedShows.Add(Show.FromXElement(e));
             }
 

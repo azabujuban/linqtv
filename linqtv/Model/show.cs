@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 
-namespace linqtv.Model
+namespace Linqtv.Model
 {
-    public enum StatusEnum
+    public enum Status
     {
         Ended,
         Continuing
@@ -13,40 +14,46 @@ namespace linqtv.Model
 
     public class Show
     {
-        public static Show FromXElement(XElement e) => new Show()
+        public static Show FromXElement(XElement element) => new Show()
         {
-            id = (uint)e.ElementOrNull(nameof(id)),
-            Actors = ((string)e.ElementOrNull(nameof(Actors))).SplitByPipe(),
-            Airs_DayOfWeek = ((string)e.ElementOrNull(nameof(Airs_DayOfWeek))),
-            Airs_Time = e.ElementAsTimeSpan(nameof(Airs_Time), "hh:mm tt"),
-            ContentRating = ((string)e.ElementOrNull(nameof(ContentRating))),
-            FirstAired = e.ElementAsDateTimeOffset(nameof(FirstAired), "yyyy-MM-dd"),
-            Genre = ((string)e.ElementOrNull(nameof(Genre))).SplitByPipe(),
-            IMDB_ID = ((string)e.ElementOrNull(nameof(IMDB_ID))),
-            Language = ((string)e.ElementOrNull(nameof(Language))),
-            Network = ((string)e.ElementOrNull(nameof(Network))),
-            NetworkID = ((uint?)e.ElementOrNull(nameof(NetworkID))),
-            Overview = ((string)e.ElementOrNull(nameof(Overview))),
-            Rating = ((float?)e.ElementOrNull(nameof(Rating))),
-            RatingCount = ((uint?)e.ElementOrNull(nameof(RatingCount))),
-            Runtime = ((uint?)e.ElementOrNull(nameof(Runtime))),
-            SeriesName = ((string)e.ElementOrNull(nameof(SeriesName))),
-            Status = ParserUtils.ParseEnum<StatusEnum>(((string)e.Element(nameof(Status)))),
-            added = e.ElementAsDateTimeOffset(nameof(added)),
-            addedBy = (uint?)e.ElementOrNull(nameof(addedBy)),
-            banner = (string)e.ElementOrNull(nameof(banner)),
-            fanart = (string)e.ElementOrNull(nameof(fanart)),
-            lastupdated = e.ElementAsDateTimeOffset(nameof(lastupdated)),
-            poster = ((string)e.ElementOrNull(nameof(poster))),
-            zap2it_id = (string)e.ElementOrNull(nameof(zap2it_id)),
+            id = (uint)element.ElementOrNull(nameof(id)),
+            Actors = ((string)element.ElementOrNull(nameof(Actors))).SplitByPipe(),
+            Airs_DayOfWeek = ((string)element.ElementOrNull(nameof(Airs_DayOfWeek))),
+            Airs_Time = element.ElementAsTimeSpan(nameof(Airs_Time), "hh:mm tt"),
+            ContentRating = ((string)element.ElementOrNull(nameof(ContentRating))),
+            FirstAired = element.ElementAsDateTimeOffset(nameof(FirstAired), "yyyy-MM-dd"),
+            Genre = ((string)element.ElementOrNull(nameof(Genre))).SplitByPipe(),
+            IMDB_ID = ((string)element.ElementOrNull(nameof(IMDB_ID))),
+            Language = ((string)element.ElementOrNull(nameof(Language))),
+            Network = ((string)element.ElementOrNull(nameof(Network))),
+            NetworkID = ((uint?)element.ElementOrNull(nameof(NetworkID))),
+            Overview = ((string)element.ElementOrNull(nameof(Overview))),
+            Rating = ((float?)element.ElementOrNull(nameof(Rating))),
+            RatingCount = ((uint?)element.ElementOrNull(nameof(RatingCount))),
+            Runtime = ((uint?)element.ElementOrNull(nameof(Runtime))),
+            SeriesName = ((string)element.ElementOrNull(nameof(SeriesName))),
+            Status = ParserUtils.ParseEnum<Status>(((string)element.Element(nameof(Status)))),
+            added = element.ElementAsDateTimeOffset(nameof(added)),
+            addedBy = (uint?)element.ElementOrNull(nameof(addedBy)),
+            banner = (string)element.ElementOrNull(nameof(banner)),
+            fanart = (string)element.ElementOrNull(nameof(fanart)),
+            lastupdated = element.ElementAsDateTimeOffset(nameof(lastupdated)),
+            poster = ((string)element.ElementOrNull(nameof(poster))),
+            zap2it_id = (string)element.ElementOrNull(nameof(zap2it_id)),
         };
 
+        [SuppressMessage("Microsoft.Naming", "CA1709", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public uint id { get; private set; }
 
         public IImmutableList<string> Actors { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1707", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public string Airs_DayOfWeek { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1707", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public TimeSpan? Airs_Time { get; private set; }
 
         public string ContentRating { get; private set; }
@@ -55,12 +62,17 @@ namespace linqtv.Model
 
         public IImmutableList<string> Genre { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1709", Justification = "These ids are used as XML tokens")]
+        [SuppressMessage("Microsoft.Naming", "CA1707", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public string IMDB_ID { get; private set; }
 
         public string Language { get; private set; }
 
         public string Network { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1709", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public uint? NetworkID { get; private set; }
 
         public string Overview { get; private set; }
@@ -71,22 +83,38 @@ namespace linqtv.Model
 
         public uint? Runtime { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1702", Justification = "These ids are used as XML tokens")]
         public string SeriesName { get; private set; }
 
-        public StatusEnum? Status { get; private set; }
+        public Status? Status { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1709", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public DateTimeOffset? added { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1709", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public uint? addedBy { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1709", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public string banner { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1709", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public string fanart { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1709", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public DateTimeOffset? lastupdated { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1709", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public string poster { get; private set; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1709", Justification = "These ids are used as XML tokens")]
+        [SuppressMessage("Microsoft.Naming", "CA1707", Justification = "These ids are used as XML tokens")]
+        // ReSharper disable once InconsistentNaming
         public string zap2it_id { get; private set; }
 
         public IEnumerable<Episode> Episodes { get; set; }

@@ -1,5 +1,5 @@
-﻿using linqtv.Linq;
-using linqtv.Model;
+﻿using Linqtv.Linq;
+using Linqtv.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Remotion.Linq.Parsing.Structure;
 using System.Collections.Generic;
@@ -12,31 +12,35 @@ namespace tests
     {
         private static string _apiKey = "17D761404C40D3C4";
 
-        private IQueryable<Show> Base => new TvdbQueryable<Show>(_apiKey);
-
         private QueryParser Parser => QueryParser.CreateDefault();
 
         [TestMethod]
         public void QueryTest1()
         {
+            var Base = TvdbQueryable<Show>.Create(_apiKey);
             var query = Base
                         .Where(s => s.SeriesName == ("somestring"));
 
-            var url_params = TvdbQueryGeneratorQueryModelVisitor.GenerateUrlParams(Parser.GetParsedQuery(query.Expression));
+            var url_params = TvdbQueryGeneratorQueryModelVisitor.GenerateUrlParameters(Parser.GetParsedQuery(query.Expression));
 
             CollectionAssert.AreEquivalent(url_params.ToList(), new Dictionary<string, string> {["SeriesName"] = "somestring" }.ToList());
+
+            Base.Dispose();
         }
 
         [TestMethod]
         public void QueryTest2()
         {
-            var hh = from s in new TvdbQueryable<Show>(_apiKey)
-                     where s.SeriesName == "the office"
-                     select s;
+            using (var tvddb = TvdbQueryable<Show>.Create(_apiKey))
+            {
+                var hh = from s in tvddb
+                         where s.SeriesName == "the office"
+                         select s;
 
-            var shows = hh.ToList();
+                var shows = hh.ToList();
 
-            Assert.AreEqual(shows.Count, 7);
+                Assert.AreEqual(shows.Count, 7);
+            }
         }
     }
 }
