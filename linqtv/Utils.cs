@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Linqtv
 {
-    public static class StringUtilities
+    internal static class StringUtilities
     {
         public static string Invariant(FormattableString formattable)
         {

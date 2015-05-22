@@ -5,7 +5,7 @@ using Linqtv.Model;
 
 namespace Linqtv
 {
-    public class Parser
+    internal class Parser
     {
         private readonly Stream _xmlStream;
 

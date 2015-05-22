@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Linqtv.Linq
 {
-    public class TvdbQueryGeneratorQueryModelVisitor : QueryModelVisitorBase
+    internal class TvdbQueryGeneratorQueryModelVisitor : QueryModelVisitorBase
     {
         private IDictionary<string, string> AccumulatedParams { get; set; }
 

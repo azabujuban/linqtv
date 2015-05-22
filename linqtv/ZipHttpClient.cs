@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Linqtv
 {
-    public class ZipHttpClient : IDisposable
+    internal class ZipHttpClient : IDisposable
     {
         private HttpClient _httpClient;
 

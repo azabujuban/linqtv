@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Linqtv.Linq
 {
-    public class TvdbQueryExecutor : Remotion.Linq.IQueryExecutor, IDisposable
+    internal class TvdbQueryExecutor : Remotion.Linq.IQueryExecutor, IDisposable
     {
         private Client _tvdbClient;
 

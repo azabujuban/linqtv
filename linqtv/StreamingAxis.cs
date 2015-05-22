@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Linqtv
 {
-    public static class StreamingAxis
+    internal static class StreamingAxis
     {
         //dont forget that XML is case sensitive
         public static IEnumerable<XElement> AsEnumerable(Stream xmlStream, ISet<string> elementNames)
