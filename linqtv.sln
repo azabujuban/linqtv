@@ -12,7 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		readme.md = readme.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cli", "cli\cli.csproj", "{ACA40735-EEA8-46FE-9EDE-E6BA590DF2DA}"
+EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -26,6 +31,10 @@ Global
 		{EB82CACA-3A58-4882-9112-F6B15F113FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB82CACA-3A58-4882-9112-F6B15F113FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB82CACA-3A58-4882-9112-F6B15F113FB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACA40735-EEA8-46FE-9EDE-E6BA590DF2DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA40735-EEA8-46FE-9EDE-E6BA590DF2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA40735-EEA8-46FE-9EDE-E6BA590DF2DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA40735-EEA8-46FE-9EDE-E6BA590DF2DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
