@@ -31,14 +31,14 @@ namespace Linqtv
         public async Task<IImmutableDictionary<string, Stream>> GetAsync(Uri uri,
             CancellationToken cancellationToken)
         {
-            var response = await _httpClient.GetAsync(uri, cancellationToken);
+            var response = await _httpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
             if (!"application/zip".Equals(response.Content.Headers.ContentType.MediaType, StringComparison.OrdinalIgnoreCase))
                 //TODO: need better exception types
                 throw new Exception($"Expected application/zip but got {response.Content.Headers.ContentType.MediaType}");
 
-            var zipArchive = new ZipArchive(await response.Content.ReadAsStreamAsync());
+            var zipArchive = new ZipArchive(await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
             return zipArchive.Entries.Select(e => new KeyValuePair<string, Stream>(e.FullName, e.Open())).ToImmutableDictionary();
         }
 

@@ -45,7 +45,7 @@ namespace Linqtv
             if (!queryParameters.ContainsKey(nameof(Show.SeriesName)))
                 return Enumerable.Empty<Show>();
 
-            return await GetSeriesByTitle(queryParameters[nameof(Show.SeriesName)]);
+            return await GetSeriesByTitle(queryParameters[nameof(Show.SeriesName)]).ConfigureAwait(false);
         }
 
         private Client(Uri baseUrl, string apiKey)
@@ -92,8 +92,8 @@ namespace Linqtv
             var retList = ImmutableList<Show>.Empty;
             try
             {
-                var response = await _httpClient.GetAsync(reqUri);
-                var responseStream = await response.Content.ReadAsStreamAsync();
+                var response = await _httpClient.GetAsync(reqUri).ConfigureAwait(false);
+                var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                 var parsedShows = new Parser(responseStream).ParseXmlStream().Shows;
 
@@ -107,7 +107,7 @@ namespace Linqtv
                 {
                     try
                     {
-                        var t = await Task.WhenAny(requestedDetails);
+                        var t = await Task.WhenAny(requestedDetails).ConfigureAwait(false);
                         requestedDetails.Remove(t);
 
                         var parsedEverything = ParseShowAndEpisode(new Parser((t.Result)[$"{language}.xml"]));
@@ -147,7 +147,7 @@ namespace Linqtv
         public async Task<IImmutableList<Show>> GetSeriesByTitle(string seriesname,
                                                                         string language,
                                                                         IProgress<Show> progress) =>
-            await GetSeries(new Url($"{BaseUrl}/api/GetSeries.php").SetQueryParam(nameof(seriesname), seriesname), language, progress);
+            await GetSeries(new Url($"{BaseUrl}/api/GetSeries.php").SetQueryParam(nameof(seriesname), seriesname), language, progress).ConfigureAwait(false);
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is an async method.")]
         public Task<IImmutableList<Show>> GetSeriesByTitle(string seriesname) => GetSeriesByTitle(seriesname, "en", null);
@@ -156,7 +156,7 @@ namespace Linqtv
         public async Task<IImmutableList<Show>> GetSeriesByImdb(string imdbid,
                                                                         string language,
                                                                         IProgress<Show> progress) =>
-            await GetSeries(new Url($"{BaseUrl}/api/GetSeriesByRemoteID.php").SetQueryParam(nameof(imdbid), imdbid), language, progress);
+            await GetSeries(new Url($"{BaseUrl}/api/GetSeriesByRemoteID.php").SetQueryParam(nameof(imdbid), imdbid), language, progress).ConfigureAwait(false);
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is an async method.")]
         public Task<IImmutableList<Show>> GetSeriesByImdb(string imdbid) => GetSeriesByImdb(imdbid, "en", null);
@@ -168,7 +168,7 @@ namespace Linqtv
         public async Task<IImmutableList<Show>> GetSeriesByZap2It(string zap2it,
                                                                         string language,
                                                                         IProgress<Show> progress) =>
-            await GetSeries(new Url($"{BaseUrl}/api/GetSeriesByRemoteID.php").SetQueryParam(nameof(zap2it), zap2it), language, progress);
+            await GetSeries(new Url($"{BaseUrl}/api/GetSeriesByRemoteID.php").SetQueryParam(nameof(zap2it), zap2it), language, progress).ConfigureAwait(false);
 
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is an async method.")]
         public Task<IImmutableList<Show>> GetSeriesByZap2It(string zap2It) => GetSeriesByZap2It(zap2It, "en", null);
@@ -192,8 +192,8 @@ namespace Linqtv
 
             try
             {
-                var response = await _httpClient.GetAsync(reqUri);
-                var responseStream = await response.Content.ReadAsStreamAsync();
+                var response = await _httpClient.GetAsync(reqUri).ConfigureAwait(false);
+                var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                 retList = retList.AddRange(new Parser(responseStream).ParseXmlStream().Episodes);
             }
