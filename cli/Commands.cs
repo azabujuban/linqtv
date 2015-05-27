@@ -14,7 +14,7 @@ namespace Cli
     public class Commands
     {
         [Verb]
-        void GetShow(string apikey, string name, bool episodes, int verbosity)
+        void GetShow([Required] string apikey, [Required] string name, [DefaultValue(true)] bool episodes, int verbosity)
         {
             using (var showContext = TvdbQueryable<Show>.Create(apikey))
             {
@@ -24,10 +24,19 @@ namespace Cli
 
                 foreach (var s in shows)
                 {
-                    var firstAired = s.FirstAired?.Date.ToString(CultureInfo.InvariantCulture) ?? string.Empty;
+                    var firstAired = s.FirstAired?.Date.ToShortDateString() ?? string.Empty;
                     var network = s?.Network ?? string.Empty;
 
                     Console.WriteLine($"{s.SeriesName} on {network} ({firstAired}-{s.Status})");
+
+                    if (episodes)
+                    {
+                        foreach (var e in s.Episodes)
+                        {
+                            Console.WriteLine($"\t{e.SeasonNumber}/{e.EpisodeNumber} - {e.EpisodeName} ({e.FirstAired?.Date.ToShortDateString()})");
+                        }
+                    }
+
                 }
             }
         }
